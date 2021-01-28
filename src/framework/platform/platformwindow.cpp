@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -150,8 +150,8 @@ void PlatformWindow::releaseAllKeys()
 
     m_inputEvent.keyboardModifiers = 0;
 
-    for(int i=0;i<4;++i)
-        m_mouseButtonStates[i] = false;
+    for(auto &mouseButtonState: m_mouseButtonStates)
+        mouseButtonState = false;
 }
 
 void PlatformWindow::fireKeysPress()

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,47 @@
 #include "demangle.h"
 
 #ifdef _MSC_VER
+
 #include <winsock2.h>
 #include <windows.h>
+
+#pragma warning (push)
+#pragma warning (disable:4091) // warning C4091: 'typedef ': ignored on left of '' when no variable is declared
 #include <dbghelp.h>
+#pragma warning (pop)
+
 #else
+
 #include <cxxabi.h>
 #include <cstring>
 #include <cstdlib>
+
 #endif
 
 namespace stdext {
 
 const char* demangle_name(const char* name)
 {
+    static const unsigned BufferSize = 1024;
+    static char Buffer[BufferSize] = {};
+
 #ifdef _MSC_VER
-    static char buffer[1024];
-    UnDecorateSymbolName(name, buffer, sizeof(buffer), UNDNAME_COMPLETE);
-    return buffer;
+    int written = UnDecorateSymbolName(name, Buffer, BufferSize - 1, UNDNAME_COMPLETE);
+    Buffer[written] = '\0';
 #else
     size_t len;
     int status;
-    static char buffer[1024];
-    char* demangled = abi::__cxa_demangle(name, 0, &len, &status);
+    char* demangled = abi::__cxa_demangle(name, nullptr, &len, &status);
     if(demangled) {
-        strcpy(buffer, demangled);
+        strncpy(Buffer, demangled, BufferSize - 1);
+        Buffer[BufferSize - 1] = '\0';
         free(demangled);
+    } else {
+        Buffer[0] = '\0';
     }
-    return buffer;
 #endif
+
+    return Buffer;
 }
 
 }

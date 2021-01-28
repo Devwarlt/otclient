@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -192,7 +192,7 @@ public:
     // tile zone related
     void setShowZone(tileflags_t zone, bool show);
     void setShowZones(bool show);
-    void setZoneColor(tileflags_t flag, const Color& color);
+    void setZoneColor(tileflags_t zone, const Color& color);
     void setZoneOpacity(float opacity) { m_zoneOpacity = opacity; }
 
     float getZoneOpacity() { return m_zoneOpacity; }

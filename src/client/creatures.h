@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -133,7 +133,7 @@ public:
     const std::vector<CreatureTypePtr>& getCreatures() { return m_creatures; }
 
 protected:
-    void internalLoadCreatureBuffer(TiXmlElement* elem, const CreatureTypePtr& m);
+    void internalLoadCreatureBuffer(TiXmlElement* attrib, const CreatureTypePtr& m);
 
 private:
     std::vector<CreatureTypePtr> m_creatures;

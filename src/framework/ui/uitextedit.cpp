@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -397,9 +397,9 @@ void UITextEdit::appendText(std::string text)
                 return;
 
             // only ignore text append if it contains invalid characters
-            if(m_validCharacters.size() > 0) {
-                for(uint i = 0; i < text.size(); ++i) {
-                    if(m_validCharacters.find(text[i]) == std::string::npos)
+            if(!m_validCharacters.empty()) {
+                for(char i: text) {
+                    if(m_validCharacters.find(i) == std::string::npos)
                         return;
                 }
             }
@@ -424,7 +424,7 @@ void UITextEdit::appendCharacter(char c)
         if(m_maxLength > 0 && m_text.length() + 1 > m_maxLength)
             return;
 
-        if(m_validCharacters.size() > 0 && m_validCharacters.find(c) == std::string::npos)
+        if(!m_validCharacters.empty() && m_validCharacters.find(c) == std::string::npos)
             return;
 
         std::string tmp;

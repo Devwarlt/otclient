@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,10 +34,8 @@ CoordsBuffer::CoordsBuffer()
 
 CoordsBuffer::~CoordsBuffer()
 {
-    if(m_hardwareVertexArray)
-        delete m_hardwareVertexArray;
-    if(m_hardwareTextureCoordArray)
-        delete m_hardwareTextureCoordArray;
+    delete m_hardwareVertexArray;
+    delete m_hardwareTextureCoordArray;
 }
 
 void CoordsBuffer::addBoudingRect(const Rect& dest, int innerLineWidth)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -86,7 +86,9 @@ void UIWidget::drawText(const Rect& screenCoords)
         return;
 
     if(screenCoords != m_textCachedScreenCoords || m_textMustRecache) {
-        Rect coords = Rect(screenCoords.topLeft() + m_textOffset, screenCoords.bottomRight());
+        Rect coords = Rect(screenCoords.topLeft(), screenCoords.bottomRight());
+        coords.translate(m_textOffset);
+
         m_textMustRecache = false;
         m_textCachedScreenCoords = coords;
 

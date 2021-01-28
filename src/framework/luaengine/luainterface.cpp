@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -707,7 +707,7 @@ void LuaInterface::closeLuaState()
     if(L) {
         // close lua, it also collects
         lua_close(L);
-        L = NULL;
+        L = nullptr;
     }
 }
 
@@ -785,7 +785,7 @@ int LuaInterface::weakRef()
 
 void LuaInterface::unref(int ref)
 {
-    if(ref >= 0 && L != NULL)
+    if(ref >= 0 && L != nullptr)
         luaL_unref(L, LUA_REGISTRYINDEX, ref);
 }
 

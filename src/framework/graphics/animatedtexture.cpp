@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,8 +30,8 @@ AnimatedTexture::AnimatedTexture(const Size& size, std::vector<ImagePtr> frames,
     if(!setupSize(size, buildMipmaps))
         return;
 
-    for(uint i=0;i<frames.size();++i) {
-        m_frames.push_back(new Texture(frames[i], buildMipmaps, compress));
+    for(const auto &frame: frames) {
+        m_frames.push_back(new Texture(frame, buildMipmaps, compress));
     }
 
     m_framesDelay = framesDelay;

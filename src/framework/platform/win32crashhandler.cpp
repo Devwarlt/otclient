@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,19 @@
 #include <winsock2.h>
 #include <windows.h>
 #include <process.h>
+
+#ifdef _MSC_VER
+
+#pragma warning (push)
+#pragma warning (disable:4091) // warning C4091: 'typedef ': ignored on left of '' when no variable is declared
 #include <imagehlp.h>
+#pragma warning (pop)
+
+#else
+
+#include <imagehlp.h>
+
+#endif
 
 const char *getExceptionName(DWORD exceptionCode)
 {

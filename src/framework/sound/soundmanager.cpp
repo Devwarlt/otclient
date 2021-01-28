@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,13 +37,13 @@ SoundManager g_sounds;
 
 void SoundManager::init()
 {
-    m_device = alcOpenDevice(NULL);
+    m_device = alcOpenDevice(nullptr);
     if(!m_device) {
         g_logger.error("unable to open audio device");
         return;
     }
 
-    m_context = alcCreateContext(m_device, NULL);
+    m_context = alcCreateContext(m_device, nullptr);
     if(!m_context) {
         g_logger.error(stdext::format("unable to create audio context: %s", alcGetString(m_device, alcGetError(m_device))));
         return;
@@ -59,8 +59,8 @@ void SoundManager::terminate()
 {
     ensureContext();
 
-    for(auto it = m_streamFiles.begin(); it != m_streamFiles.end();++it) {
-        auto& future = it->second;
+    for(auto &streamFile: m_streamFiles) {
+        auto& future = streamFile.second;
         future.wait();
     }
     m_streamFiles.clear();

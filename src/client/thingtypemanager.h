@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,7 @@ public:
     const ItemTypePtr& findItemTypeByClientId(uint16 id);
     const ItemTypePtr& findItemTypeByName(std::string name);
     ItemTypeList findItemTypesByName(std::string name);
-    ItemTypeList findItemTypesByString(std::string str);
+    ItemTypeList findItemTypesByString(std::string name);
 
     const ThingTypePtr& getNullThingType() { return m_nullThingType; }
     const ItemTypePtr& getNullItemType() { return m_nullItemType; }

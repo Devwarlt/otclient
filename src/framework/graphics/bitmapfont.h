@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@ public:
     /// Calculate glyphs positions to use on render, also calculates textBoxSize if wanted
     const std::vector<Point>& calculateGlyphsPositions(const std::string& text,
                                                        Fw::AlignmentFlag align = Fw::AlignTopLeft,
-                                                       Size* textBoxSize = NULL);
+                                                       Size* textBoxSize = nullptr);
 
     /// Simulate render and calculate text size
     Size calculateTextRectSize(const std::string& text);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -63,7 +63,7 @@ bool StaticText::addMessage(const std::string& name, Otc::MessageMode mode, cons
 {
     //TODO: this could be moved to lua
     // first message
-    if(m_messages.size() == 0) {
+    if(m_messages.empty()) {
         m_name = name;
         m_mode = mode;
     }
@@ -82,7 +82,7 @@ bool StaticText::addMessage(const std::string& name, Otc::MessageMode mode, cons
     if(isYell())
         delay *= 2;
 
-    m_messages.push_back(std::make_pair(text, g_clock.millis() + delay));
+    m_messages.emplace_back(text, g_clock.millis() + delay);
     compose();
 
     if(!m_updateEvent)

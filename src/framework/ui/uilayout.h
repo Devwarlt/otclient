@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,9 +36,9 @@ public:
     void update();
     void updateLater();
 
-    virtual void applyStyle(const OTMLNodePtr& styleNode) { }
-    virtual void addWidget(const UIWidgetPtr& widget) { }
-    virtual void removeWidget(const UIWidgetPtr& widget) { }
+    virtual void applyStyle(const OTMLNodePtr& /*styleNode*/) { }
+    virtual void addWidget(const UIWidgetPtr& /*widget*/) { }
+    virtual void removeWidget(const UIWidgetPtr& /*widget*/) { }
     void disableUpdates() { m_updateDisabled++; }
     void enableUpdates() { m_updateDisabled = std::max<int>(m_updateDisabled-1,0); }
 

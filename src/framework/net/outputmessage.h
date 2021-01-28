@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,7 @@ public:
 
     void reset();
 
+    void setBuffer(const std::string& buffer);
     std::string getBuffer() { return std::string((char*)m_buffer + m_headerPos, m_messageSize); }
 
     void addU8(uint8 value);

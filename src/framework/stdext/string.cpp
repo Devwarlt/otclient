@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
 #include "string.h"
 #include "format.h"
 #include <boost/algorithm/string.hpp>
-#include <ctype.h>
+#include <cctype>
 #include <physfs.h>
 
 #ifdef _MSC_VER
@@ -45,13 +45,13 @@ std::string resolve_path(const std::string& filePath, std::string sourcePath)
     return sourcePath + filePath;
 }
 
-std::string date_time_string()
+std::string date_time_string(const char* format/* = "%b %d %Y %H:%M:%S"*/)
 {
-    char date[32];
+    char date[100];
     std::time_t tnow;
     std::time(&tnow);
     std::tm *ts = std::localtime(&tnow);
-    std::strftime(date, 32, "%b %d %Y %H:%M:%S", ts);
+    std::strftime(date, 100, format, ts);
     return std::string(date);
 }
 

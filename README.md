@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/edubart/otclient.svg?branch=master)](http://travis-ci.org/edubart/otclient) [![Join the chat at https://gitter.im/edubart/otclient](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/edubart/otclient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)\
+[![Build Status](https://secure.travis-ci.org/edubart/otclient.svg?branch=master)](http://travis-ci.org/edubart/otclient) [![Join the chat at https://gitter.im/edubart/otclient](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/edubart/otclient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Open Source Helpers](https://www.codetriage.com/edubart/otclient/badges/users.svg)](https://www.codetriage.com/edubart/otclient)
 
 ### What is otclient?
 
@@ -36,6 +36,30 @@ In short, if you need to compile OTClient, follow these tutorials:
 * [Compiling on Linux](https://github.com/edubart/otclient/wiki/Compiling-on-Linux)
 * [Compiling on OS X](https://github.com/edubart/otclient/wiki/Compiling-on-Mac-OS-X)
 
+### Build and run with Docker
+
+To build the image:
+
+```sh
+docker build -t edubart/otclient .
+```
+
+To run the built image:
+
+```sh
+# Disable access control for the X server.
+xhost +
+
+# Run the container image with the required bindings to the host devices and volumes.
+docker run -it --rm \
+  --env DISPLAY \
+  --volume /tmp/.X11-unix:/tmp/.X11-unix \
+  --device /dev/dri \
+  --device /dev/snd edubart/otclient /bin/bash
+
+# Enable access control for the X server.
+xhost -
+```
 
 ### Need help?
 

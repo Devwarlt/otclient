@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@
 #include "item.h"
 #include <framework/luaengine/luaobject.h>
 
-enum tileflags_t
+enum tileflags_t : uint32
 {
     TILESTATE_NONE = 0,
     TILESTATE_PROTECTIONZONE = 1 << 0,
@@ -88,8 +88,8 @@ public:
     int getDrawElevation() { return m_drawElevation; }
     std::vector<ItemPtr> getItems();
     std::vector<CreaturePtr> getCreatures();
-    std::vector<CreaturePtr> getWalkingCreatures() { return m_walkingCreatures; }
-    std::vector<ThingPtr> getThings() { return m_things; }
+    const std::vector<CreaturePtr>& getWalkingCreatures() { return m_walkingCreatures; }
+    const std::vector<ThingPtr>& getThings() { return m_things; }
     ItemPtr getGround();
     int getGroundSpeed();
     uint8 getMinimapColorByte();
@@ -132,9 +132,9 @@ public:
 private:
     void checkTranslucentLight();
 
-    stdext::packed_vector<CreaturePtr> m_walkingCreatures;
-    stdext::packed_vector<EffectPtr> m_effects; // leave this outside m_things because it has no stackpos.
-    stdext::packed_vector<ThingPtr> m_things;
+    std::vector<CreaturePtr> m_walkingCreatures;
+    std::vector<EffectPtr> m_effects; // leave this outside m_things because it has no stackpos.
+    std::vector<ThingPtr> m_things;
     Position m_position;
     uint8 m_drawElevation;
     uint8 m_minimapColor;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -298,8 +298,7 @@ std::string BitmapFont::wrapText(const std::string& text, int maxWidth)
     std::vector<std::string> wordsSplit = stdext::split(text);
 
     // break huge words into small ones
-    for(uint i=0;i<wordsSplit.size();++i) {
-        const std::string& word = wordsSplit[i];
+    for(const auto &word: wordsSplit) {
         int wordWidth = calculateTextRectSize(word).width();
         if(wordWidth > maxWidth) {
             std::string newWord;
@@ -324,8 +323,8 @@ std::string BitmapFont::wrapText(const std::string& text, int maxWidth)
     }
 
     // compose lines
-    for(uint i=0;i<words.size();++i) {
-        std::string candidate = line + words[i];
+    for(const auto &word: words) {
+        std::string candidate = line + word;
         int candidateWidth = calculateTextRectSize(candidate).width();
 
         if(candidateWidth > maxWidth) {
@@ -334,7 +333,7 @@ std::string BitmapFont::wrapText(const std::string& text, int maxWidth)
             line = "";
         }
 
-        line += words[i] + " ";
+        line += word + " ";
     }
 
     outText += line;

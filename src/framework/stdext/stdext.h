@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,21 @@
 #ifndef STDEXT_H
 #define STDEXT_H
 
-#include "compiler.h"
-#include "dumper.h"
-#include "types.h"
-#include "exception.h"
-#include "demangle.h"
+#include "any.h"
+#include "boolean.h"
 #include "cast.h"
+#include "compiler.h"
+#include "demangle.h"
+#include "dumper.h"
+#include "dynamic_storage.h"
+#include "exception.h"
+#include "format.h"
 #include "math.h"
+#include "packed_any.h"
+#include "packed_storage.h"
+#include "shared_object.h"
 #include "string.h"
 #include "time.h"
-#include "boolean.h"
-#include "shared_object.h"
-#include "any.h"
-#include "packed_any.h"
-#include "dynamic_storage.h"
-#include "packed_storage.h"
-#include "format.h"
-#include "packed_vector.h"
+#include "types.h"
 
 #endif

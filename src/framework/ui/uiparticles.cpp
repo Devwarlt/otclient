@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,8 +50,8 @@ void UIParticles::drawSelf(Fw::DrawPane drawPane)
         else
             g_painter->translate(m_rect.x() + m_referencePos.x * m_rect.width(), m_rect.y() + m_referencePos.y * m_rect.height());
 
-        for(auto it = m_effects.begin(), end = m_effects.end(); it != end; ++it)
-            (*it)->render();
+        for(auto &effect: m_effects)
+            effect->render();
         g_painter->restoreSavedState();
     }
 }

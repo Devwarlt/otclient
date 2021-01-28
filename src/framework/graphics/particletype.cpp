@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -142,7 +142,7 @@ void ParticleType::load(const OTMLNodePtr& node)
     }
 
     if(pColors.empty())
-        pColors.push_back(Color(255, 255, 255, 128));
+        pColors.emplace_back(255, 255, 255, 128);
     if(pColorsStops.empty())
         pColorsStops.push_back(0);
 

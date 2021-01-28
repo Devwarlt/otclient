@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,10 +40,10 @@ public:
     ScheduledEventPtr cycleEvent(const std::function<void()>& callback, int delay);
 
 private:
-    std::list<EventPtr> m_eventList;
+    std::deque<EventPtr> m_eventList;
     int m_pollEventsSize;
     stdext::boolean<false> m_disabled;
-    std::priority_queue<ScheduledEventPtr, std::vector<ScheduledEventPtr>, lessScheduledEvent> m_scheduledEventList;
+    std::priority_queue<ScheduledEventPtr, std::deque<ScheduledEventPtr>, lessScheduledEvent> m_scheduledEventList;
 };
 
 extern EventDispatcher g_dispatcher;

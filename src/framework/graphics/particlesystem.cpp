@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -61,8 +61,8 @@ void ParticleSystem::addParticle(const ParticlePtr& particle)
 
 void ParticleSystem::render()
 {
-    for(auto it = m_particles.begin(), end = m_particles.end(); it != end; ++it)
-        (*it)->render();
+    for(auto &particle: m_particles)
+        particle->render();
     g_painter->resetCompositionMode();
 }
 

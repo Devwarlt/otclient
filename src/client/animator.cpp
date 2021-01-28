@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+* Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,7 @@ void Animator::unserialize(int animationPhases, const FileStreamPtr& fin)
     for(int i = 0; i < m_animationPhases; ++i) {
         int minimum = fin->getU32();
         int maximum = fin->getU32();
-        m_phaseDurations.push_back(std::make_tuple(minimum, maximum));
+        m_phaseDurations.emplace_back(minimum, maximum);
     }
 
     m_phase = getStartPhase();
@@ -123,6 +123,24 @@ int Animator::getPhase()
     return m_phase;
 }
 
+int Animator::getPhaseAt(ticks_t time)
+{
+    int index = 0;
+    ticks_t total = 0;
+
+    for(const auto &pair: m_phaseDurations) {
+        total += std::get<1>(pair);
+
+        if (time < total) {
+            return index;
+        }
+
+        ++index;
+    }
+
+    return std::min<int>(index, m_animationPhases - 1);
+}
+
 int Animator::getStartPhase()
 {
     if(m_startPhase > -1)
@@ -157,7 +175,7 @@ int Animator::getLoopPhase()
 
     if(m_loopCount == 0)
         return 0;
-        
+
     if(m_currentLoop < (m_loopCount - 1)) {
         m_currentLoop++;
         return 0;
@@ -182,7 +200,7 @@ void Animator::calculateSynchronous()
     int totalDuration = 0;
     for(int i = 0; i < m_animationPhases; i++)
         totalDuration += getPhaseDuration(i);
-    
+
     ticks_t ticks = g_clock.millis();
     int elapsedTicks = (int)(ticks % totalDuration);
     int totalTime = 0;
@@ -196,4 +214,14 @@ void Animator::calculateSynchronous()
         totalTime += duration;
     }
     m_lastPhaseTicks = ticks;
+}
+
+ticks_t Animator::getTotalDuration()
+{
+    ticks_t time = 0;
+    for (const auto &pair: m_phaseDurations) {
+        time += std::get<1>(pair);
+    }
+
+    return time;
 }

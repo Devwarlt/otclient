@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -63,8 +63,7 @@ void Tile::draw(const Point& dest, float scaleFactor, int drawFlags, LightView *
 
             bool restore = false;
             if(g_map.showZones() && thing->isGround()) {
-                for(unsigned int i = 0; i < sizeof(flags) / sizeof(tileflags_t); ++i) {
-                    tileflags_t flag = flags[i];
+                for(auto flag: flags) {
                     if(hasFlag(flag) && g_map.showZone(flag)) {
                         g_painter->setOpacity(g_map.getZoneOpacity());
                         g_painter->setColor(g_map.getZoneColor(flag));
@@ -95,9 +94,6 @@ void Tile::draw(const Point& dest, float scaleFactor, int drawFlags, LightView *
         }
     }
 
-    int redrawPreviousTopW = 0;
-    int redrawPreviousTopH = 0;
-
     if(drawFlags & Otc::DrawItems) {
         // now common items in reverse order
         for(auto it = m_things.rbegin(); it != m_things.rend(); ++it) {
@@ -105,31 +101,9 @@ void Tile::draw(const Point& dest, float scaleFactor, int drawFlags, LightView *
             if(thing->isOnTop() || thing->isOnBottom() || thing->isGroundBorder() || thing->isGround() || thing->isCreature())
                 break;
             thing->draw(dest - m_drawElevation*scaleFactor, scaleFactor, animate, lightView);
-
-            if(thing->isLyingCorpse()) {
-                redrawPreviousTopW = std::max<int>(thing->getWidth(), redrawPreviousTopW);
-                redrawPreviousTopH = std::max<int>(thing->getHeight(), redrawPreviousTopH);
-            }
-
             m_drawElevation += thing->getElevation();
             if(m_drawElevation > Otc::MAX_ELEVATION)
                 m_drawElevation = Otc::MAX_ELEVATION;
-        }
-    }
-
-    // after we render 2x2 lying corpses, we must redraw previous creatures/ontop above them
-    if(redrawPreviousTopH > 0 || redrawPreviousTopW > 0) {
-        int topRedrawFlags = drawFlags & (Otc::DrawCreatures | Otc::DrawEffects | Otc::DrawOnTop | Otc::DrawAnimations);
-        if(topRedrawFlags) {
-            for(int x=-redrawPreviousTopW;x<=0;++x) {
-                for(int y=-redrawPreviousTopH;y<=0;++y) {
-                    if(x == 0 && y == 0)
-                        continue;
-                    const TilePtr& tile = g_map.getTile(m_position.translated(x,y));
-                    if(tile)
-                        tile->draw(dest + Point(x*Otc::TILE_PIXELS, y*Otc::TILE_PIXELS)*scaleFactor, scaleFactor, topRedrawFlags);
-                }
-            }
         }
     }
 
@@ -386,8 +360,7 @@ ThingPtr Tile::getTopLookThing()
     if(isEmpty())
         return nullptr;
 
-    for(uint i = 0; i < m_things.size(); ++i) {
-        ThingPtr thing = m_things[i];
+    for(auto thing: m_things) {
         if(!thing->isIgnoreLook() && (!thing->isGround() && !thing->isGroundBorder() && !thing->isOnBottom() && !thing->isOnTop()))
             return thing;
     }
@@ -400,14 +373,12 @@ ThingPtr Tile::getTopUseThing()
     if(isEmpty())
         return nullptr;
 
-    for(uint i = 0; i < m_things.size(); ++i) {
-        ThingPtr thing = m_things[i];
+    for(auto thing: m_things) {
         if (thing->isForceUse() || (!thing->isGround() && !thing->isGroundBorder() && !thing->isOnBottom() && !thing->isOnTop() && !thing->isCreature() && !thing->isSplash()))
             return thing;
     }
 
-    for(uint i = 0; i < m_things.size(); ++i) {
-        ThingPtr thing = m_things[i];
+    for(auto thing: m_things) {
         if (!thing->isGround() && !thing->isGroundBorder() && !thing->isCreature() && !thing->isSplash())
             return thing;
     }
@@ -418,8 +389,7 @@ ThingPtr Tile::getTopUseThing()
 CreaturePtr Tile::getTopCreature()
 {
     CreaturePtr creature;
-    for(uint i = 0; i < m_things.size(); ++i) {
-        ThingPtr thing = m_things[i];
+    for(auto thing: m_things) {
         if(thing->isLocalPlayer()) // return local player if there is no other creature
             creature = thing->static_self_cast<Creature>();
         else if(thing->isCreature() && !thing->isLocalPlayer())
@@ -480,8 +450,7 @@ ThingPtr Tile::getTopMultiUseThing()
     if(CreaturePtr topCreature = getTopCreature())
         return topCreature;
 
-    for(uint i = 0; i < m_things.size(); ++i) {
-        ThingPtr thing = m_things[i];
+    for(auto thing: m_things) {
         if(thing->isForceUse())
             return thing;
     }
@@ -495,8 +464,7 @@ ThingPtr Tile::getTopMultiUseThing()
         }
     }
 
-    for(uint i = 0; i < m_things.size(); ++i) {
-        ThingPtr thing = m_things[i];
+    for(auto thing: m_things) {
         if(!thing->isGround() && !thing->isOnTop())
             return thing;
     }

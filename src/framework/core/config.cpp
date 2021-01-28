@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -74,7 +74,7 @@ void Config::clear()
 
 void Config::setValue(const std::string& key, const std::string& value)
 {
-    if(key == "") {
+    if(value.empty()) {
         remove(key);
         return;
     }
@@ -87,7 +87,7 @@ void Config::setList(const std::string& key, const std::vector<std::string>& lis
 {
     remove(key);
 
-    if(list.size() == 0)
+    if(list.empty())
         return;
 
     OTMLNodePtr child = OTMLNode::create(key, true);

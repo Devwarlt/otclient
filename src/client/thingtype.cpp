@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -123,11 +123,11 @@ void ThingType::serialize(const FileStreamPtr& fin)
         }
     }
 
-    for(uint i = 0; i < m_spritesIndex.size(); i++) {
+    for(int i: m_spritesIndex) {
         if(g_game.getFeature(Otc::GameSpritesU32))
-            fin->addU32(m_spritesIndex[i]);
+            fin->addU32(i);
         else
-            fin->addU16(m_spritesIndex[i]);
+            fin->addU16(i);
     }
 }
 
@@ -311,8 +311,8 @@ void ThingType::unserialize(uint16 clientId, ThingCategory category, const FileS
             stdext::throw_exception("a thing type has more than 4096 sprites");
 
         m_spritesIndex.resize((totalSpritesCount+totalSprites));
-        for(int i = totalSpritesCount; i < (totalSpritesCount+totalSprites); i++)
-            m_spritesIndex[i] = g_game.getFeature(Otc::GameSpritesU32) ? fin->getU32() : fin->getU16();
+        for(int j = totalSpritesCount; j < (totalSpritesCount+totalSprites); j++)
+            m_spritesIndex[j] = g_game.getFeature(Otc::GameSpritesU32) ? fin->getU32() : fin->getU16();
 
         totalSpritesCount += totalSprites;
     }
@@ -328,7 +328,7 @@ void ThingType::exportImage(std::string fileName)
     if(m_null)
         stdext::throw_exception("cannot export null thingtype");
 
-    if(m_spritesIndex.size() == 0)
+    if(m_spritesIndex.empty())
         stdext::throw_exception("cannot export thingtype without sprites");
 
     ImagePtr image(new Image(Size(32 * m_size.width() * m_layers * m_numPatternX, 32 * m_size.height() * m_animationPhases * m_numPatternY * m_numPatternZ)));
@@ -476,14 +476,14 @@ const TexturePtr& ThingType::getTexture(int animationPhase)
                         }
 
                         Rect drawRect(framePos + Point(m_size.width(), m_size.height()) * Otc::TILE_PIXELS - Point(1,1), framePos);
-                        for(int x = framePos.x; x < framePos.x + m_size.width() * Otc::TILE_PIXELS; ++x) {
-                            for(int y = framePos.y; y < framePos.y + m_size.height() * Otc::TILE_PIXELS; ++y) {
-                                uint8 *p = fullImage->getPixel(x,y);
+                        for(int fx = framePos.x; fx < framePos.x + m_size.width() * Otc::TILE_PIXELS; ++fx) {
+                            for(int fy = framePos.y; fy < framePos.y + m_size.height() * Otc::TILE_PIXELS; ++fy) {
+                                uint8 *p = fullImage->getPixel(fx,fy);
                                 if(p[3] != 0x00) {
-                                    drawRect.setTop   (std::min<int>(y, (int)drawRect.top()));
-                                    drawRect.setLeft  (std::min<int>(x, (int)drawRect.left()));
-                                    drawRect.setBottom(std::max<int>(y, (int)drawRect.bottom()));
-                                    drawRect.setRight (std::max<int>(x, (int)drawRect.right()));
+                                    drawRect.setTop   (std::min<int>(fy, (int)drawRect.top()));
+                                    drawRect.setLeft  (std::min<int>(fx, (int)drawRect.left()));
+                                    drawRect.setBottom(std::max<int>(fy, (int)drawRect.bottom()));
+                                    drawRect.setRight (std::max<int>(fx, (int)drawRect.right()));
                                 }
                             }
                         }

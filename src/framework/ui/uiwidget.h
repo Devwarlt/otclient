@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -246,7 +246,7 @@ public:
     bool isClipping() { return m_clipping; }
     bool isDestroyed() { return m_destroyed; }
 
-    bool hasChildren() { return m_children.size() > 0; }
+    bool hasChildren() { return !m_children.empty(); }
     bool containsMarginPoint(const Point& point) { return getMarginRect().contains(point); }
     bool containsPaddingPoint(const Point& point) { return getPaddingRect().contains(point); }
     bool containsPoint(const Point& point) { return m_rect.contains(point); }

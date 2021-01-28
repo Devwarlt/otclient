@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -852,10 +852,19 @@ void WIN32Window::setFullscreen(bool fullscreen)
     wpPrev.length = sizeof(wpPrev);
 
     if(fullscreen) {
-        Size size = getDisplaySize();
+        MONITORINFO mi;
+        HMONITOR m = MonitorFromWindow(m_window, MONITOR_DEFAULTTONEAREST);
+        mi.cbSize = sizeof(mi);
+        GetMonitorInfoW(m, &mi);
+        uint x = mi.rcMonitor.left;
+        uint y = mi.rcMonitor.top;
+        uint width = mi.rcMonitor.right - mi.rcMonitor.left;
+        uint height = mi.rcMonitor.bottom - mi.rcMonitor.top;
+
         GetWindowPlacement(m_window, &wpPrev);
+
         SetWindowLong(m_window, GWL_STYLE, (dwStyle & ~WS_OVERLAPPEDWINDOW) | WS_POPUP | WS_EX_TOPMOST);
-        SetWindowPos(m_window, HWND_TOPMOST, 0, 0, size.width(), size.height(), SWP_FRAMECHANGED);
+        SetWindowPos(m_window, HWND_TOPMOST, x, y, width, height, SWP_FRAMECHANGED);
     } else {
         SetWindowLong(m_window, GWL_STYLE, (dwStyle & ~(WS_POPUP | WS_EX_TOPMOST)) | WS_OVERLAPPEDWINDOW);
         SetWindowPlacement(m_window, &wpPrev);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -405,7 +405,7 @@ void Creature::updateJump()
 
         int nextT, i = 1;
         do {
-            nextT = stdext::round((-b + std::sqrt(std::max<int>(b*b + 4*a*(roundHeight+diff*i), 0.0)) * diff) / (2*a));
+            nextT = stdext::round((-b + std::sqrt(std::max<double>(b*b + 4*a*(roundHeight+diff*i), 0.0)) * diff) / (2*a));
             ++i;
 
             if(nextT < halfJumpDuration)
@@ -483,14 +483,14 @@ void Creature::onDeath()
     callLuaField("onDeath");
 }
 
-void Creature::updateWalkAnimation(int totalPixelsWalked)
+void Creature::updateWalkAnimation(int totalPixelsWalked, int stepDuration)
 {
     // update outfit animation
     if(m_outfit.getCategory() != ThingCategoryCreature)
         return;
 
     int footAnimPhases = getAnimationPhases() - 1;
-    int footDelay = getStepDuration(true) / 3;
+    int footDelay = stepDuration / 3;
     // Since mount is a different outfit we need to get the mount animation phases
     if(m_outfit.getMount() != 0) {
         ThingType *type = g_things.rawGetThingType(m_outfit.getMount(), m_outfit.getCategory());
@@ -579,20 +579,20 @@ void Creature::nextWalkUpdate()
         m_walkUpdateEvent = g_dispatcher.scheduleEvent([self] {
             self->m_walkUpdateEvent = nullptr;
             self->nextWalkUpdate();
-        }, getStepDuration() / 32);
+        }, getStepDuration(true) / Otc::TILE_PIXELS);
     }
 }
 
 void Creature::updateWalk()
 {
-    float walkTicksPerPixel = getStepDuration(true) / 32;
-    int totalPixelsWalked = std::min<int>(m_walkTimer.ticksElapsed() / walkTicksPerPixel, 32.0f);
+    int stepDuration = getStepDuration(true);
+    int totalPixelsWalked = stepDuration ? std::min<int>((m_walkTimer.ticksElapsed() * Otc::TILE_PIXELS) / stepDuration, Otc::TILE_PIXELS) : 0;
 
     // needed for paralyze effect
     m_walkedPixels = std::max<int>(m_walkedPixels, totalPixelsWalked);
 
     // update walk animation and offsets
-    updateWalkAnimation(totalPixelsWalked);
+    updateWalkAnimation(totalPixelsWalked, stepDuration);
     updateWalkOffset(m_walkedPixels);
     updateWalkingTile();
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,16 @@ void OutputMessage::reset()
     m_writePos = MAX_HEADER_SIZE;
     m_headerPos = MAX_HEADER_SIZE;
     m_messageSize = 0;
+}
+
+void OutputMessage::setBuffer(const std::string& buffer)
+{
+    int len = buffer.size();
+    reset();
+    checkWrite(len);
+    memcpy((char*)(m_buffer + m_writePos), buffer.c_str(), len);
+    m_writePos += len;
+    m_messageSize += len;
 }
 
 void OutputMessage::addU8(uint8 value)

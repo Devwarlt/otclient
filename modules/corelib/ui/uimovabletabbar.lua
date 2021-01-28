@@ -334,9 +334,12 @@ function UIMoveableTabBar:removeTab(tab)
   end
 
   if self.currentTab == tab then
-    self:selectPrevTab()
     if #self.tabs == 1 then
       self.currentTab = nil
+    elseif index == #self.tabs then
+      self:selectPrevTab()
+    else
+      self:selectNextTab()
     end
   end
   table.remove(tabTable, index)
@@ -384,6 +387,11 @@ function UIMoveableTabBar:selectTab(tab)
   tab:setChecked(true)
   tab:setOn(false)
   tab.blinking = false
+
+  if tab.blinkEvent then
+    removeEvent(tab.blinkEvent)
+    tab.blinkEvent = nil
+  end
 
   local parent = tab:getParent()
   parent:focusChild(tab, MouseFocusReason)

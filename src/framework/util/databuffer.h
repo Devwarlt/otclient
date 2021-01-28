@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,8 +32,7 @@ public:
         m_capacity(res),
         m_buffer(new T[m_capacity]) { }
     ~DataBuffer() {
-        if(m_buffer)
-            delete[] m_buffer;
+        delete[] m_buffer;
     }
 
     inline void reset() { m_size = 0; }
@@ -59,8 +58,8 @@ public:
             T *buffer = new T[n];
             for(uint i=0;i<m_size;++i)
                 buffer[i] = m_buffer[i];
-            if(m_buffer)
-                delete[] m_buffer;
+
+            delete[] m_buffer;
             m_buffer = buffer;
             m_capacity = n;
         }

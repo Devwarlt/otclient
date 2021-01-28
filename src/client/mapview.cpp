@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -359,16 +359,16 @@ void MapView::updateVisibleTilesCache(int start)
             }
         } else {
             // cache tiles in spiral mode
-            static std::vector<Point> m_spiral;
+            static std::vector<Point> spiral;
             if(start == 0) {
-                m_spiral.resize(m_drawDimension.area());
+                spiral.resize(m_drawDimension.area());
                 int width = m_drawDimension.width();
                 int height = m_drawDimension.height();
                 int tpx = width/2 - 2;
                 int tpy = height/2 - 2;
                 int count = 0;
                 Rect area(0, 0, m_drawDimension);
-                m_spiral[count++] = Point(tpx+1,tpy+1);
+                spiral[count++] = Point(tpx+1,tpy+1);
                 for(int step = 1; tpx >= 0 || tpy >= 0; ++step, --tpx, --tpy) {
                     int qs = 2*step;
                     Rect lines[4] = {
@@ -378,26 +378,26 @@ void MapView::updateVisibleTilesCache(int start)
                         Rect(tpx,       tpy + 1,   1,   qs),
                     };
 
-                    for(int i=0;i<4;++i) {
-                        int sx = std::max<int>(lines[i].left(), area.left());
-                        int ex = std::min<int>(lines[i].right(), area.right());
-                        int sy = std::max<int>(lines[i].top(), area.top());
-                        int ey = std::min<int>(lines[i].bottom(), area.bottom());
+                    for(auto &line: lines) {
+                        int sx = std::max<int>(line.left(), area.left());
+                        int ex = std::min<int>(line.right(), area.right());
+                        int sy = std::max<int>(line.top(), area.top());
+                        int ey = std::min<int>(line.bottom(), area.bottom());
                         for(int qx=sx;qx<=ex;++qx)
                             for(int qy=sy;qy<=ey;++qy)
-                                m_spiral[count++] = Point(qx, qy);
+                                spiral[count++] = Point(qx, qy);
                     }
                 }
             }
 
-            for(m_updateTilesPos = start; m_updateTilesPos < (int)m_spiral.size(); ++m_updateTilesPos) {
+            for(m_updateTilesPos = start; m_updateTilesPos < (int)spiral.size(); ++m_updateTilesPos) {
                 // avoid rendering too much tiles at once
                 if((int)m_cachedVisibleTiles.size() > MAX_TILE_DRAWS) {
                     stop = true;
                     break;
                 }
 
-                const Point& p = m_spiral[m_updateTilesPos];
+                const Point& p = spiral[m_updateTilesPos];
                 Position tilePos = cameraPosition.translated(p.x - m_virtualCenterOffset.x, p.y - m_virtualCenterOffset.y);
                 tilePos.coveredUp(cameraPosition.z - iz);
                 if(const TilePtr& tile = g_map.getTile(tilePos)) {
@@ -479,12 +479,12 @@ void MapView::updateGeometry(const Size& visibleDimension, const Size& optimized
     requestVisibleTilesCacheUpdate();
 }
 
-void MapView::onTileUpdate(const Position& pos)
+void MapView::onTileUpdate(const Position&)
 {
     requestVisibleTilesCacheUpdate();
 }
 
-void MapView::onMapCenterChange(const Position& pos)
+void MapView::onMapCenterChange(const Position&)
 {
     requestVisibleTilesCacheUpdate();
 }

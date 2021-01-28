@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +70,7 @@ private:
     void resetGameStates();
 
 protected:
-    void processConnectionError(const boost::system::error_code& error);
+    void processConnectionError(const boost::system::error_code& ec);
     void processDisconnect();
     void processPing();
     void processPingBack();
@@ -178,7 +178,7 @@ public:
     void moveToParentContainer(const ThingPtr& thing, int count);
     void rotate(const ThingPtr& thing);
     void use(const ThingPtr& thing);
-    void useWith(const ItemPtr& fromThing, const ThingPtr& toThing);
+    void useWith(const ItemPtr& item, const ThingPtr& toThing);
     void useInventoryItem(int itemId);
     void useInventoryItemWith(int itemId, const ThingPtr& toThing);
     ItemPtr findItemInContainers(uint itemId, int subType);
@@ -241,7 +241,7 @@ public:
     // pvp related
     void setUnjustifiedPoints(UnjustifiedPoints unjustifiedPoints);
     UnjustifiedPoints getUnjustifiedPoints() { return m_unjustifiedPoints; };
-    void setOpenPvpSituations(int openPvpSitations);
+    void setOpenPvpSituations(int openPvpSituations);
     int getOpenPvpSituations() { return m_openPvpSituations; }
 
     // npc trade related
@@ -345,7 +345,7 @@ public:
     std::string getCharacterName() { return m_characterName; }
     std::string getWorldName() { return m_worldName; }
     std::vector<uint8> getGMActions() { return m_gmActions; }
-    bool isGM() { return m_gmActions.size() > 0; }
+    bool isGM() { return !m_gmActions.empty(); }
     Otc::Direction getLastWalkDir() { return m_lastWalkDir; }
 
     std::string formatCreatureName(const std::string &name);

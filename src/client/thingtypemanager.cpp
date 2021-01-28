@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,15 +48,15 @@ void ThingTypeManager::init()
     m_datLoaded = false;
     m_xmlLoaded = false;
     m_otbLoaded = false;
-    for(int i = 0; i < ThingLastCategory; ++i)
-        m_thingTypes[i].resize(1, m_nullThingType);
+    for(auto &m_thingType: m_thingTypes)
+        m_thingType.resize(1, m_nullThingType);
     m_itemTypes.resize(1, m_nullItemType);
 }
 
 void ThingTypeManager::terminate()
 {
-    for(int i = 0; i < ThingLastCategory; ++i)
-        m_thingTypes[i].clear();
+    for(auto &m_thingType: m_thingTypes)
+        m_thingType.clear();
     m_itemTypes.clear();
     m_reverseItemTypes.clear();
     m_nullThingType = nullptr;
@@ -77,8 +77,8 @@ void ThingTypeManager::saveDat(std::string fileName)
 
         fin->addU32(m_datSignature);
 
-        for(int category = 0; category < ThingLastCategory; ++category)
-            fin->addU16(m_thingTypes[category].size() - 1);
+        for(auto &m_thingType: m_thingTypes)
+            fin->addU16(m_thingType.size() - 1);
 
         for(int category = 0; category < ThingLastCategory; ++category) {
             uint16 firstId = 1;
@@ -110,10 +110,10 @@ bool ThingTypeManager::loadDat(std::string file)
         m_datSignature = fin->getU32();
         m_contentRevision = static_cast<uint16_t>(m_datSignature);
 
-        for(int category = 0; category < ThingLastCategory; ++category) {
+        for(auto &m_thingType: m_thingTypes) {
             int count = fin->getU16() + 1;
-            m_thingTypes[category].clear();
-            m_thingTypes[category].resize(count, m_nullThingType);
+            m_thingType.clear();
+            m_thingType.resize(count, m_nullThingType);
         }
 
         for(int category = 0; category < ThingLastCategory; ++category) {
@@ -199,11 +199,12 @@ void ThingTypeManager::loadOtb(const std::string& file)
             root->skip(128); // description
         }
 
+        BinaryTreeVec children = root->getChildren();
         m_reverseItemTypes.clear();
-        m_itemTypes.resize(root->getChildren().size() + 1, m_nullItemType);
-        m_reverseItemTypes.resize(root->getChildren().size() + 1, m_nullItemType);
+        m_itemTypes.resize(children.size() + 1, m_nullItemType);
+        m_reverseItemTypes.resize(children.size() + 1, m_nullItemType);
 
-        for(const BinaryTreePtr& node : root->getChildren()) {
+        for(const BinaryTreePtr& node : children) {
             ItemTypePtr itemType(new ItemType);
             itemType->unserialize(node);
             addItemType(itemType);

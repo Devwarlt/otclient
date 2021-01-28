@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -62,7 +62,7 @@ void LocalPlayer::lockWalk(int millis)
     m_walkLockExpiration = std::max<int>(m_walkLockExpiration, (ticks_t) g_clock.millis() + millis);
 }
 
-bool LocalPlayer::canWalk(Otc::Direction direction)
+bool LocalPlayer::canWalk(Otc::Direction)
 {
     // cannot walk while locked
     if(m_walkLockExpiration != 0 && g_clock.millis() < m_walkLockExpiration)
@@ -265,17 +265,16 @@ void LocalPlayer::updateWalkOffset(int totalPixelsWalked)
 
 void LocalPlayer::updateWalk()
 {
-    int stepDuration = getStepDuration();
-    float walkTicksPerPixel = getStepDuration(true) / 32.0f;
-    int totalPixelsWalked = std::min<int>(m_walkTimer.ticksElapsed() / walkTicksPerPixel, 32.0f);
+    int stepDuration = getStepDuration(true);
+    int totalPixelsWalked = stepDuration ? std::min<int>((m_walkTimer.ticksElapsed() * Otc::TILE_PIXELS) / stepDuration, Otc::TILE_PIXELS) : 0;
 
     // update walk animation and offsets
-    updateWalkAnimation(totalPixelsWalked);
+    updateWalkAnimation(totalPixelsWalked, stepDuration);
     updateWalkOffset(totalPixelsWalked);
     updateWalkingTile();
 
     // terminate walk only when client and server side walk are completed
-    if(m_walking && !m_preWalking && m_walkTimer.ticksElapsed() >= stepDuration)
+    if(m_walking && !m_preWalking && m_walkTimer.ticksElapsed() >= getStepDuration())
         terminateWalk();
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,11 +38,11 @@ void InputMessage::reset()
 void InputMessage::setBuffer(const std::string& buffer)
 {
     int len = buffer.size();
-    checkWrite(MAX_HEADER_SIZE + len);
-    memcpy(m_buffer + MAX_HEADER_SIZE, buffer.c_str(), len);
-    m_readPos = MAX_HEADER_SIZE;
-    m_headerPos = MAX_HEADER_SIZE;
-    m_messageSize = len;
+    reset();
+    checkWrite(len);
+    memcpy((char*)(m_buffer + m_readPos), buffer.c_str(), len);
+    m_readPos += len;
+    m_messageSize += len;
 }
 
 uint8 InputMessage::getU8()

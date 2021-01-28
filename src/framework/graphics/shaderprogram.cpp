@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -129,7 +129,7 @@ std::string ShaderProgram::log()
     glGetProgramiv(m_programId, GL_INFO_LOG_LENGTH, &infoLogLength);
     if(infoLogLength > 1) {
         std::vector<char> buf(infoLogLength);
-        glGetShaderInfoLog(m_programId, infoLogLength-1, NULL, &buf[0]);
+        glGetShaderInfoLog(m_programId, infoLogLength-1, nullptr, &buf[0]);
         infoLog = &buf[0];
     }
     return infoLog;

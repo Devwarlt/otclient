@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -140,6 +140,12 @@ void UIManager::inputEvent(const InputEvent& event)
             if(m_draggingWidget) {
                 if(m_draggingWidget->onDragMove(event.mousePos, event.mouseMoved))
                     break;
+            }
+
+            if(m_pressedWidget) {
+                if(m_pressedWidget->onMouseMove(event.mousePos, event.mouseMoved)) {
+                    break;
+                }
             }
 
             m_mouseReceiver->propagateOnMouseMove(event.mousePos, event.mouseMoved, widgetList);

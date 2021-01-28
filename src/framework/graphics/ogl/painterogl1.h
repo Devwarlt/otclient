@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,7 +60,7 @@ public:
     void drawBoundingRect(const Rect& dest, int innerLineWidth);
 
     void setMatrixMode(MatrixMode matrixMode);
-    void setTransformMatrix(const Matrix3& projectionMatrix);
+    void setTransformMatrix(const Matrix3& transformMatrix);
     void setProjectionMatrix(const Matrix3& projectionMatrix);
     void setTextureMatrix(const Matrix3& textureMatrix);
     void setColor(const Color& color);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,7 @@ class packed_storage {
 
 public:
     packed_storage() : m_values(nullptr), m_size(0) { }
-    ~packed_storage() { if(m_values) delete[] m_values; }
+    ~packed_storage() { delete[] m_values; }
 
     template<typename T>
     void set(Key id, const T& value) {

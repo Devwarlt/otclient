@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,6 +35,8 @@ class Position
 public:
     Position() : x(65535), y(65535), z(255) { }
     Position(uint16 x, uint16 y, uint8 z) : x(x), y(y), z(z) { }
+
+    Position(const Position &position) = default;
 
     Position translatedToDirection(Otc::Direction direction) {
         Position pos = *this;
